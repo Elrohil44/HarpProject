@@ -1,10 +1,10 @@
 import cv2 as cv
-import ppppp.midi
+import pygame.midi
 import time
 
 def init_pygame():
-    ppppp.midi.init()
-    player = ppppp.midi.Output(0)
+    pygame.midi.init()
+    player = pygame.midi.Output(0)
     player.set_instrument(49 - 1)
     return player
 
