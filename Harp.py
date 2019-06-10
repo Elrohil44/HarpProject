@@ -35,6 +35,7 @@ class HarpString:
         self.C = -(self.x0 + (self.x1 - self.x0) / (self.y0 - self.y1) * self.y0)
         self.note = 60 + ndx * 2
         self.midi = midi
+        self.is_playing = False
 
     def distance(self, point):
         x0, y0 = point
@@ -42,12 +43,14 @@ class HarpString:
 
 
     def play_sound(self):
-        print("playing note " + str(self.note))
-        self.midi.note_on(self.note, 127)
+        if not self.is_playing:
+            self.is_playing = True
+            self.midi.note_on(self.note, 127)
 
     def stop_sound(self):
-        print("not playing note " + str(self.note))
-        self.midi.note_off(self.note, 127)
+        if self.is_playing:
+            self.is_playing = False
+            self.midi.note_off(self.note, 127)
 
 
 
@@ -105,7 +108,6 @@ while cv.waitKey(1) < 0:
         x = (frameWidth * point[0]) / out.shape[3]
         y = (frameHeight * point[1]) / out.shape[2]
 
-        print(conf)
         if conf > threshold:
             points.append((int(x), int(y)))
             cv.circle(frame, (int(x), int(y)), hand_hitbox, (0, 0, 255))
